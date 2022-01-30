@@ -8,9 +8,23 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ArticleRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-#[ApiResource]
+// collectionOperations c'est pour la liste(collection) et on va afficher seulement les données avec le groupe est article_read
+// itemOperations c'est pour un objet specifique(/api/article/{id} par ex) et on va afficher seulement les données avec le groupe est article_details_read
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => 'article_read']],
+        'post'
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'article_details_read']],
+        'put',
+        'patch',
+        'delete'
+    ],
+)]
 class Article
 {
 // Contient notre champ Id
@@ -19,12 +33,15 @@ class Article
     use Timestapable;
 // Nos autres champs
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['user_details_read','article_read','article_details_read'])]
     private $name;
 
     #[ORM\Column(type: 'text')]
+    #[Groups(['user_details_read','article_read','article_details_read'])]
     private $content;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'articles')]
+    #[Groups(['article_details_read'])]
     #[ORM\JoinColumn(nullable: false)]
     private $author;
 

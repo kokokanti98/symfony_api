@@ -11,10 +11,24 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ApiResource]
+// collectionOperations c'est pour la liste(collection) et on va afficher seulement les données avec le groupe est user_read
+// itemOperations c'est pour un objet specifique(/api/user/{id} par ex) et on va afficher seulement les données avec le groupe est user_details_read
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['normalization_context' => ['groups' => 'user_read']],
+        'post'
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['groups' => 'user_details_read']],
+        'put',
+        'patch',
+        'delete'
+    ],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 // Contient notre champ Id
@@ -23,15 +37,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use Timestapable;
 // Nos autres champs
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(['user_read','user_details_read','article_details_read'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['user_details_read'])]
     private $roles = [];
-
+// On affichera le password que seulement qu'on on va recuperer les infos d un utilisateur specifique(par son id par exemple)
     #[ORM\Column(type: 'string')]
+    #[Groups(['user_details_read'])]
     private $password;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Article::class, orphanRemoval: true)]
+    #[Groups(['user_details_read'])]
     private $articles;
 
     public function __construct()
