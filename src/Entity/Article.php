@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Entity\Timestapable;
 use App\Entity\ResourceId;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ArticleRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ApiResource]
 class Article
 {
 // Contient notre champ Id
@@ -62,7 +65,7 @@ class Article
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
-
+        #$this->author->addArticle($this);
         return $this;
     }
 }

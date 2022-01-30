@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 use App\Entity\Timestapable;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\ResourceId;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 // Contient notre champ Id
@@ -34,7 +37,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->articles = new ArrayCollection();
-        $this->createdAt = new DateTimeImmutable(); 
+        $this->createdAt = new DateTimeImmutable();
+        #$this->createdAt = new DateTimeImmutable();  
     }
 
     public function getEmail(): ?string
