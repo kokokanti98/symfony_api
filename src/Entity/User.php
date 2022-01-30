@@ -12,9 +12,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[ApiFilter(BooleanFilter::class, properties: ['isActif'])]
+#[ApiFilter(OrderFilter::class, properties: ['age'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(ExistsFilter::class, properties: ['updatedAt'])]
+#[ApiFilter(NumericFilter::class, properties: ['age'])]
+#[ApiFilter(RangeFilter::class, properties: ['age'])]
+#[ApiFilter(DateFilter::class, properties: ['createdAt'])]
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'partial'])]
 // collectionOperations c'est pour la liste(collection) et on va afficher seulement les données avec le groupe est user_read
 // itemOperations c'est pour un objet specifique(/api/user/{id} par ex) et on va afficher seulement les données avec le groupe est user_details_read
 #[ApiResource(
@@ -51,6 +66,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Article::class, orphanRemoval: true)]
     #[Groups(['user_details_read'])]
     private $articles;
+
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['user_read','user_details_read','article_details_read'])]
+    private $age;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['user_read','user_details_read','article_details_read'])]
+    private $isActif;
 
     public function __construct()
     {
@@ -171,6 +194,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $article->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getIsActif(): ?bool
+    {
+        return $this->isActif;
+    }
+
+    public function setIsActif(bool $isActif): self
+    {
+        $this->isActif = $isActif;
 
         return $this;
     }

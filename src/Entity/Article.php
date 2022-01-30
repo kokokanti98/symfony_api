@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Timestapable;
 use App\Entity\ResourceId;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\ArticleUpdatedAt;
 use App\Repository\ArticleRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,7 +23,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'get' => ['normalization_context' => ['groups' => 'article_details_read']],
         'put',
         'patch',
-        'delete'
+        'delete',
+        'put_updated_at' => [
+            'method' => 'POST',
+            'path' => '/articles/{id}/updated-at',
+            'controller' => ArticleUpdatedAt::class,
+        ],
     ],
 )]
 class Article

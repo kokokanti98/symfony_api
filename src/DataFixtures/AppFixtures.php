@@ -29,7 +29,12 @@ class AppFixtures extends Fixture
             $passwordHash = $this->encoder->hashPassword($user,'password');
         // Set de notre champ password et email de notre utilisateur
             $user->setPassword($passwordHash)
-                ->setEmail($fake->email);
+                ->setEmail($fake->email)
+                ->setAge($fake->numberBetween(15,25))
+                ->setIsActif(true);
+            if($u == 3){
+                $user->setIsActif(false);
+            }
         // Enregistrer nos données sur notre nouveau utilisateur, NB: il faut un flush pour que ca enregistre dans la bdd
             $manager->persist($user);
         // Boucle pour contruire nos articles avec un nb d'article entre 5-10 pour chq utilisateur
