@@ -2,7 +2,6 @@
 
 ## Utilise API Platform
 
-### Lien pour le test(en ligne): est [ici](https://google.fr/) 
 
 ### Ce qu'on peut faire pour le moment
 
