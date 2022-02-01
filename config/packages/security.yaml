@@ -17,10 +17,35 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                #username_path: email
+                #password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+    # Les tables qu'on veut sécuriser avec leur method
+        users:
+            pattern:   ^/api/users
+            methods: [PUT, PATCH, DELETE]
+            stateless: true
+            jwt: ~
+        articles:
+            pattern:   ^/api/articles
+            methods: [POST, PUT, PATCH, DELETE]
+            stateless: true
+            jwt: ~
         main:
             lazy: true
             provider: app_user_provider
-
+# Les accès si IS_AUTHENTICATED_FULLY alors il aura besoin de s authentifier via le token pour utiliser l'api
+    access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY, methods: [PUT, PATCH, DELETE] }
+        - { path: ^/api/articles,       roles: IS_AUTHENTICATED_FULLY, methods: [POST, PUT, PATCH, DELETE] }
+        # - { path: ^/api/users, roles: PUBLIC_ACCESS }
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -29,7 +54,7 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    access_control:
+    #access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

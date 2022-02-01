@@ -1,4 +1,4 @@
-# Une API en Symfony 5 avec JWT(en cours de prod)
+# Une API en Symfony 5 avec JWT(en cours)
 
 
 ## Prerequis
