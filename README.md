@@ -1,6 +1,5 @@
-# Une API en Symfony 5
+# Une API en Symfony 5 avec JWT(en cours de prod)
 
-## Le lien pour la version en ligne est [ici](https://exempleprodsymfony.koko.best/api) 
 
 ## Prerequis
 
