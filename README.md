@@ -15,6 +15,8 @@
 ### php bin/console doctrine:database:create // Pour creer la base de données Si c'est déjà créer on peut skiper
 
 ### php bin/console doctrine:migrations:migrate  // Pour lancer la migration parce que y a déjà les migrations qui sont présents dans dossier migrations
+
+### php -S 127.0.0.1:8000 -t public  // Pour lancer l'application il faut une version de php>=8.0 installer pour que ca marche
 ## Utilise API Platform
 
 
