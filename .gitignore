@@ -22,3 +22,6 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###< Les configurations pour la bdd ###
+/config/services.yaml
