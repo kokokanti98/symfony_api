@@ -5,21 +5,21 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 # Contient les variables d'environnement qu'on va utiliser dans notre application
 # Pour serveur externe 
-#parameters:
-#    app.database: 'mysql'
-#    app.database_name: 'symfony_api_bdd'
-#    app.database_url: '127.0.0.1:3306'
-#    app.user: 'symfony_api_user'
-#    app.password: '@piSymfonyEx@mple'
-#    app.server_version: 'mariadb-10.4.22'
-# En local
 parameters:
     app.database: 'mysql'
     app.database_name: 'symfony_api'
     app.database_url: '127.0.0.1:3306'
-    app.user: 'root'
-    app.password: ''
+    app.user: 'api_user'
+    app.password: 'exemple'
     app.server_version: 'mariadb-10.4.22'
+# En local
+#parameters:
+#    app.database: 'mysql'
+#    app.database_name: 'symfony_api'
+#    app.database_url: '127.0.0.1:3306'
+#    app.user: 'root'
+#    app.password: ''
+#    app.server_version: 'mariadb-10.4.22'
 
 services:
     # default configuration for services in *this* file
