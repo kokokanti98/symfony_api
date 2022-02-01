@@ -6,6 +6,8 @@
 
 ### Une base de donnée(ex: MySQL)
 
+### PHP version 8.0 ou +
+
 ### Les conf de base actuel sur la bdd sont les conf pour XAMP ou WAMP
 
 ## Commande de lancement
