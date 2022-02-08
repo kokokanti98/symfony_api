@@ -20,6 +20,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use App\Controller\UserUpdatedAtController;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -41,7 +42,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
         'get' => ['normalization_context' => ['groups' => 'user_details_read']],
         'put',
         'patch',
-        'delete'
+        'delete',
+        'put_updated_at' => [
+            'method' => 'POST',
+            'path' => '/users/{id}/updated-at',
+            'controller' => UserUpdatedAtController::class,
+        ]
     ],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
